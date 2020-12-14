@@ -11,15 +11,15 @@
 
 ### 게임 시작
 
-- <span style="color:red">Skrull</span>, Terran
+- [Skrull](#), Terran
 - 밤 상태로 시작
 - 각각의 플레이어에게 1~5의 숫자가 하나씩 부여됨
-- <span style="color:red">Skrull은 4나 5가 부여됨</span>
+- [Skrull은 4나 5가 부여됨](#)
 
 ### 진행 - 밤
 
 - 밤의 지속 시간은 15초
-- <span style="color:red">Skrull은 한 명을 죽일 수 있음</span>
+- [Skrull은 한 명을 죽일 수 있음](#)
 
 ### 진행 - 낮 : 대화
 
@@ -38,8 +38,8 @@
 
 ### 종료 조건 
 
-- 밤 -> 낮 전환 시 Terran 0 일때 <span style="color:red">Skrull 승리</span>
-- 낮 -> 밤 전환 시 Skull 0일때 Terran 승리
+- 밤 -> 낮 전환 시 Terran 0 일때 [Skrull 승리](#)
+- 낮 -> 밤 전환 시 [Skrull 0](#)일때 Terran 승리
 
 
 ## 클라이언트 측 코드
@@ -58,5 +58,5 @@
 
 ### 진행 - 밤
 
-- <span style="color:red">Skrull은 죽일 사람을 선택, 닉네임 입력</span>
+- [Skrull은 죽일 사람을 선택, 닉네임 입력](#)
 
