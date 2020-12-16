@@ -15,17 +15,16 @@ public class ConnectServer implements Runnable {
     }
 
     public void run() {
-        try (
-                BufferedReader br = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-                PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
-        ) {
-
+        try  {
+            BufferedReader br = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+            PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
             System.out.println(socket.getInetAddress() + "연결됨");
 
             out.println("닉네임을 입력해 주세요");
 
             String inputLine = br.readLine();
             String name = null;
+
             PrintWriter sender = null;
 
             name = inputLine;
@@ -39,8 +38,8 @@ public class ConnectServer implements Runnable {
                 Thread.sleep(1000);
             }
             out.println("game start");
-            barrier.await();
 
+            barrier.await();
         } catch (Exception e) {
             e.printStackTrace();
         }

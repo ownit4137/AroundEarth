@@ -17,7 +17,6 @@ public class Player {
                     BufferedReader br = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 
                     while(true) {
-                        if(br.readLine() == null) break;
                         System.out.println(br.readLine());
                     }
                 } catch (Exception e) {

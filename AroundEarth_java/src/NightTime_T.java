@@ -17,10 +17,11 @@ class NightTime_T implements Runnable {
 
     public void run() {
         phaser.register();
-        try (
-                BufferedReader br = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-                PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
-        ) {
+        try {
+            BufferedReader br = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+            PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
+
+
             out.println("========== " + phaser.getPhase() + " 번째 날 밤 ==========\n");
             out.println("당신의 번호는 " + AroundEarth.playerNum.get(name) + "입니다.");
 
@@ -33,7 +34,6 @@ class NightTime_T implements Runnable {
                 out.println(i * 5 + "초 후 낮으로 바뀝니다.");
                 Thread.sleep(5000);
             }
-
 
         } catch (Exception e) {
             e.printStackTrace();

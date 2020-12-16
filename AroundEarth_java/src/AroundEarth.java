@@ -6,7 +6,7 @@ import java.util.concurrent.Phaser;
 
 
 public class AroundEarth {
-    static final int maxPlayer = 4;
+    static final int maxPlayer = 2;
     static int skrullNum;
 
     static Map<String, Socket> playerSocket = new Hashtable<String, Socket>();
@@ -15,8 +15,11 @@ public class AroundEarth {
 
     public static void main(String[] args) {
         CyclicBarrier barrier = new CyclicBarrier(maxPlayer + 1);
+        ServerSocket sSocket = null;
 
-        try (ServerSocket sSocket = new ServerSocket(10000)) {
+
+        try {
+            sSocket = new ServerSocket(10000);
             System.out.println("서버 열림");
 
             for (int i = 0; i < maxPlayer; i++) {
@@ -27,13 +30,19 @@ public class AroundEarth {
                 cThread.start();
             }
 
+            barrier.await();
+
+
             giveRole();
 
+
+
             barrier.await();
-            barrier.await();
+
         } catch (Exception e) {
             e.printStackTrace();
         }
+        playerSocket.forEach((u, v) -> System.out.println(v.isClosed()+"!"));
 
 
         Phaser phaser = new Phaser();
@@ -45,7 +54,8 @@ public class AroundEarth {
         try{
             for (String name : playerSocket.keySet()){
                 System.out.println(name);
-                new Thread(new NightTime_T(name, phaser)).start();
+                Thread cThread = new Thread(new NightTime_T(name, phaser));
+                cThread.start();
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -66,8 +76,6 @@ public class AroundEarth {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-
-
 
     }
 
