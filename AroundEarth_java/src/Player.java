@@ -3,7 +3,6 @@ import java.net.InetAddress;
 import java.net.Socket;
 import java.util.Scanner;
 
-// 소켓통신용 클라이언트 부분
 public class Player {
 
     public static void main(String[] args) {

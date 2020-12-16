@@ -4,17 +4,15 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.ArrayList;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
+import java.util.Hashtable;
+import java.util.Map;
 
-public class Server extends Thread {
-    static ArrayList<Socket> userSocketList = new ArrayList<Socket>();
+public class ConnectServer implements Runnable{
+    static Map<String, Socket> userSocketList = new Hashtable<String, Socket>();
     static Socket socket = null;
 
-    public Server(Socket socket) {
+    public ConnectServer(Socket socket) {
         this.socket = socket;
-        userSocketList.add(socket);
     }
 
     public void run() {
@@ -32,22 +30,24 @@ public class Server extends Thread {
             PrintWriter sender = null;
 
             while((inputLine = br.readLine()) != null ) {
-                if(name == null) name = inputLine;
+                if(name == null) {
+                    name = inputLine;
+                    userSocketList.put(name, socket);
+                }
 
-                for(int i = 0; i < userSocketList.size(); i++) {
-                    sender = new PrintWriter(userSocketList.get(i).getOutputStream(), true);
-
-                    sender.println(name + " : " + inputLine);
+                for (Map.Entry<String, Socket> ent : userSocketList.entrySet()){
+                    new PrintWriter(ent.getValue().getOutputStream(), true)
+                            .println(name + " : " + inputLine);
                 }
             }
+
+
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
     public static void main(String[] args) {
-        //ExecutorService eService = Executors.newFixedThreadPool(5);
-
         try(ServerSocket sSocket = new ServerSocket(10000)) {
             System.out.println("서버 열림");
 
@@ -55,7 +55,7 @@ public class Server extends Thread {
                 Socket cSocket = sSocket.accept();
                 System.out.println("연결됨");
 
-                Thread cThread = new Server(cSocket);
+                Thread cThread = new Thread(new ConnectServer(cSocket));
                 cThread.start();
             }
 
