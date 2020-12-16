@@ -9,6 +9,9 @@ public class AroundEarth {
     static final int maxPlayer = 4;
     static int skrullNum;
 
+    static Boolean isKilled = false;
+    static String victim = "";
+
     static Map<String, Socket> playerSocket = new Hashtable<String, Socket>();
     static Map<String, Integer> playerNum = new Hashtable<String, Integer>();
 
@@ -51,23 +54,40 @@ public class AroundEarth {
 
         try{
             for (String name : playerSocket.keySet()){
-                System.out.println(name);
-                Thread cThread = new Thread(new NightTime_T(name, phaser));
-                cThread.start();
+                Boolean isSkrull = playerNum.get(name) == skrullNum;
+
+                System.out.println(name + isSkrull);
+
+                Thread nightThread = new Thread(new NightTime(name, phaser, isSkrull));
+                nightThread.start();
             }
+            phaser.arriveAndAwaitAdvance();
+            Thread.sleep(15000);
+            phaser.arriveAndAwaitAdvance();
+
         } catch (Exception e) {
             e.printStackTrace();
         }
 
 
-
-
-        phaser.arriveAndAwaitAdvance();
-        System.out.println("after passing barrier");
-
         phaseCount = phaser.getPhase();
-        System.out.println("PhaseCount is "+phaseCount);
+        System.out.println("PhaseCount is "+ phaseCount);
 
+
+        try{
+            for (String name : playerSocket.keySet()){
+                System.out.println(name);
+
+                Thread dayThread = new Thread(new DayTime(name, phaser));
+                dayThread.start();
+            }
+            phaser.arriveAndAwaitAdvance();
+            Thread.sleep(15000);
+            phaser.arriveAndAwaitAdvance();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         try {
             Thread.sleep(20000);
