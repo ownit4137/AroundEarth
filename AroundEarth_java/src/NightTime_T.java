@@ -5,7 +5,7 @@ import java.net.Socket;
 import java.util.concurrent.Phaser;
 
 class NightTime_T implements Runnable {
-    static Socket socket = null;
+    Socket socket = null;
     String name;
     Phaser phaser;
 

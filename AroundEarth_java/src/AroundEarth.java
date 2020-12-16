@@ -6,7 +6,7 @@ import java.util.concurrent.Phaser;
 
 
 public class AroundEarth {
-    static final int maxPlayer = 2;
+    static final int maxPlayer = 4;
     static int skrullNum;
 
     static Map<String, Socket> playerSocket = new Hashtable<String, Socket>();
@@ -31,18 +31,14 @@ public class AroundEarth {
             }
 
             barrier.await();
-
-
             giveRole();
-
-
-
             barrier.await();
 
         } catch (Exception e) {
             e.printStackTrace();
         }
-        playerSocket.forEach((u, v) -> System.out.println(v.isClosed()+"!"));
+
+        playerSocket.forEach((u, v) -> System.out.println(v.isClosed()+"!"));       // check
 
 
         Phaser phaser = new Phaser();
@@ -50,6 +46,8 @@ public class AroundEarth {
 
         int phaseCount = phaser.getPhase();
         System.out.println("PhaseCount is " + phaseCount);
+
+        playerSocket.forEach((u, v) -> System.out.println(v.isClosed()+"#"));       //check
 
         try{
             for (String name : playerSocket.keySet()){
