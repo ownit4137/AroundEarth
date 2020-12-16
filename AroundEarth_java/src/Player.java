@@ -17,6 +17,7 @@ public class Player {
                     BufferedReader br = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 
                     while(true) {
+                        if(br.readLine() == null) break;
                         System.out.println(br.readLine());
                     }
                 } catch (Exception e) {
@@ -34,7 +35,6 @@ public class Player {
 
                     while(true) {
                         input = scv.nextLine();
-                        //if(input == "quit") break;
 
                         out.println(input);
                     }
