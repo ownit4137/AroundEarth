@@ -9,38 +9,31 @@ class NightTime implements Runnable {
     String name;
     Phaser phaser;
     Boolean isSkrull = false;
+    int number;
 
     public NightTime(String name, Phaser phaser, Boolean isSkrull) {
         this.socket = AroundEarth.playerSocket.get(name);
         this.name = name;
         this.phaser = phaser;
         this.isSkrull = isSkrull;
+        this.number = AroundEarth.playerNum.get(name);
     }
 
     public void run() {
         phaser.register();
         try {
-            BufferedReader br = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
 
-            out.println("========== " + phaser.getPhase() + " 번째 날 밤 ==========\n");
-            out.println("당신의 번호는 " + AroundEarth.playerNum.get(name) + "입니다.");
-
-            out.println("생존자 목록\n==================================");
-            AroundEarth.playerNum.keySet().forEach(out::println);
-            out.println("==================================\n\n");
-
+            display(out);
+            Thread.sleep(3000);
             phaser.arriveAndAwaitAdvance();
 
-
             if(isSkrull){
+                BufferedReader br = new BufferedReader(new InputStreamReader(socket.getInputStream()));
                 out.println("당신은 Skrull입니다. 죽일 사람의 이름을 15초 안에 입력하세요.");
                 String vict = br.readLine();
+                AroundEarth.killTerran(vict);
 
-                if(AroundEarth.playerNum.keySet().contains(vict) && AroundEarth.playerNum.get(vict) != -1){
-                    AroundEarth.isKilled = true;
-                    AroundEarth.victim = vict;
-                }
             } else {
                 out.println("당신은 Terran입니다.");
                 for (int i = 3; i > 0; i--) {
@@ -50,9 +43,24 @@ class NightTime implements Runnable {
             }
 
             phaser.arriveAndAwaitAdvance();
+            phaser.arriveAndDeregister();
 
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public void display(PrintWriter out){
+        out.println("========== " + AroundEarth.dayCount + " 번째 날 밤 ==========\n");
+        if(number != -1) out.println("당신의 번호는 " + number + "입니다.");
+
+        out.println("생존자 목록\n==================================");
+        AroundEarth.playerNum
+                .keySet().stream()
+                .filter(e -> AroundEarth.playerNum.get(e) > 0)
+                .forEach(out::println);
+        out.println("==================================\n\n");
+
+
     }
 }

@@ -18,27 +18,33 @@ public class ConnectServer implements Runnable {
         try  {
             BufferedReader br = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
+
             System.out.println(socket.getInetAddress() + "연결됨");
 
             out.println("닉네임을 입력해 주세요");
 
-            String inputLine = br.readLine();
-            String name = null;
+            /*
+             *
+             *   이름 중복처리
+             *
+             */
 
-            PrintWriter sender = null;
-
-            name = inputLine;
+            String name = br.readLine();
             AroundEarth.playerSocket.put(name, socket);
             barrier.await();
-
 
             out.println("5초 후 게임이 시작됩니다");
             for (int i = 5; i > 0; i--) {
                 out.println(i);
                 Thread.sleep(1000);
             }
-            out.println("game start");
-
+            out.println("게임 시작 !");
+            /*
+             *
+             *   게임 시작 문구 출력
+             *
+             */
+            Thread.sleep(2000);
             barrier.await();
         } catch (Exception e) {
             e.printStackTrace();
