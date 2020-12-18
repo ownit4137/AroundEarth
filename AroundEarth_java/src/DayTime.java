@@ -2,6 +2,7 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.util.Map;
 import java.util.concurrent.Phaser;
 
 class DayTime implements Runnable {
@@ -24,17 +25,19 @@ class DayTime implements Runnable {
             PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
 
             display(out);
-            Thread.sleep(3000);
+
             phaser.arriveAndAwaitAdvance();
 
+            Thread chatThread = new Thread(new Chat(name, br));
+            chatThread.start();
 
-            /*
-             *
-             *   채팅
-             *
-             */
-            out.println("채팅 30초");
-            Thread.sleep(6000);
+            Thread.sleep(AroundEarth.discussTime);
+            chatThread.interrupt();
+
+            phaser.arriveAndAwaitAdvance();
+
+            out.println("====== 회의 시간이 종료되었습니다. ======");
+
 
 
             /*
@@ -43,8 +46,7 @@ class DayTime implements Runnable {
              *
              */
             out.println("투표 10초");
-            Thread.sleep(2000);
-
+            Thread.sleep(AroundEarth.voteTime);
             phaser.arriveAndAwaitAdvance();
             phaser.arriveAndDeregister();
 

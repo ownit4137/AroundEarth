@@ -25,7 +25,7 @@ class NightTime implements Runnable {
             PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
 
             display(out);
-            Thread.sleep(3000);
+            Thread.sleep(AroundEarth.stabilizeTime);
             phaser.arriveAndAwaitAdvance();
 
             if(isSkrull){

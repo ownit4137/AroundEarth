@@ -7,6 +7,12 @@ import java.util.concurrent.Phaser;
 
 public class AroundEarth {
     static final int maxPlayer = 4;
+    static final int dayTimeWait = 50000;
+    static final int nightTimeWait = 15000;
+
+    static final int discussTime = 30000;
+    static final int voteTime = 10000;
+    static final int stabilizeTime = 2000;
     static int skrullNum;
     static int dayCount = 1;
 
@@ -61,7 +67,7 @@ public class AroundEarth {
                     nightThread.start();
                 }
                 phaser.arriveAndAwaitAdvance();
-                Thread.sleep(15000);
+                Thread.sleep(nightTimeWait);
                 phaser.arriveAndAwaitAdvance();
 
             } catch (Exception e) {
@@ -85,8 +91,16 @@ public class AroundEarth {
                     Thread dayThread = new Thread(new DayTime(name, phaser));
                     dayThread.start();
                 }
+
+                Thread.sleep(AroundEarth.stabilizeTime);
                 phaser.arriveAndAwaitAdvance();
-                Thread.sleep(10000);
+
+                Thread.sleep(AroundEarth.discussTime);
+                Thread.sleep(AroundEarth.stabilizeTime);
+                phaser.arriveAndAwaitAdvance();
+
+                Thread.sleep(AroundEarth.voteTime);
+                Thread.sleep(AroundEarth.stabilizeTime);
                 phaser.arriveAndAwaitAdvance();
 
             } catch (Exception e) {
