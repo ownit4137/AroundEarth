@@ -27,6 +27,8 @@ class DayTime implements Runnable {
             display(out);
 
             phaser.arriveAndAwaitAdvance();
+            out.println("====== 회의 시간을 시작합니다. ======");
+            out.println("====== 제한 시간 30초 ======");
 
             Thread chatThread = new Thread(new Chat(name, br));
             chatThread.start();
@@ -35,19 +37,21 @@ class DayTime implements Runnable {
             chatThread.interrupt();
 
             phaser.arriveAndAwaitAdvance();
-
             out.println("====== 회의 시간이 종료되었습니다. ======");
 
-
-
-            /*
-             *
-             *   투표
-             *
-             */
-            out.println("투표 10초");
-            Thread.sleep(AroundEarth.voteTime);
             phaser.arriveAndAwaitAdvance();
+            out.println("====== 투표를 시작합니다. ======");
+            out.println("====== 제한 시간 10초 ======");
+
+            Thread voteThread = new Thread(new Vote(name, br));
+            voteThread.start();
+
+            Thread.sleep(AroundEarth.voteTime);
+            voteThread.interrupt();
+
+            phaser.arriveAndAwaitAdvance();
+            out.println("====== 투표 시간이 종료되었습니다. ======");
+
             phaser.arriveAndDeregister();
 
         } catch (Exception e) {
@@ -76,5 +80,11 @@ class DayTime implements Runnable {
                 .filter(e -> AroundEarth.playerNum.get(e) > 0)
                 .forEach(out::println);
         out.println("==================================\n\n");
-    }
+
+        /*
+
+        회의 진행 메세지
+
+         */
+   }
 }

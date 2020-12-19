@@ -12,7 +12,7 @@ public class AroundEarth {
 
     static final int discussTime = 30000;
     static final int voteTime = 10000;
-    static final int stabilizeTime = 2000;
+    static final int stabilizeTime = 3000;
     static int skrullNum;
     static int dayCount = 1;
 
@@ -20,9 +20,9 @@ public class AroundEarth {
     static String victim = "";
     static Boolean isFinished = false;
 
-
     static Map<String, Socket> playerSocket = new Hashtable<String, Socket>();
     static Map<String, Integer> playerNum = new Hashtable<String, Integer>();
+    static Map<String, Integer> voteCount = new Hashtable<String, Integer>();
 
 
     public static void main(String[] args) {
@@ -99,6 +99,9 @@ public class AroundEarth {
                 Thread.sleep(AroundEarth.stabilizeTime);
                 phaser.arriveAndAwaitAdvance();
 
+                Thread.sleep(AroundEarth.stabilizeTime);
+                phaser.arriveAndAwaitAdvance();
+
                 Thread.sleep(AroundEarth.voteTime);
                 Thread.sleep(AroundEarth.stabilizeTime);
                 phaser.arriveAndAwaitAdvance();
@@ -107,7 +110,7 @@ public class AroundEarth {
                 e.printStackTrace();
             }
 
-
+            AroundEarth.voteCount.entrySet().stream().forEach(e -> System.out.println(e.getKey() + " : " + e.getValue()));
             /*
              *
              *   종료 조건

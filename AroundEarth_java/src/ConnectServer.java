@@ -31,6 +31,7 @@ public class ConnectServer implements Runnable {
 
             String name = br.readLine();
             AroundEarth.playerSocket.put(name, socket);
+            AroundEarth.voteCount.put(name, 0);
             barrier.await();
 
             out.println("5초 후 게임이 시작됩니다");
