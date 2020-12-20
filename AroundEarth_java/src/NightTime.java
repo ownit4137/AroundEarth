@@ -30,7 +30,8 @@ class NightTime implements Runnable {
 
             if(isSkrull){
                 BufferedReader br = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-                out.println("당신은 Skrull입니다. 죽일 사람의 이름을 15초 안에 입력하세요.");
+                out.println("당신은 Skrull입니다. \n죽일 사람의 이름을 15초 안에 입력하세요.");
+
                 String vict = br.readLine();
                 AroundEarth.killTerran(vict);
 
@@ -51,15 +52,16 @@ class NightTime implements Runnable {
     }
 
     public void display(PrintWriter out){
-        out.println("========== " + AroundEarth.dayCount + " 번째 날 밤 ==========\n");
-        if(number != -1) out.println("당신의 번호는 " + number + "입니다.");
+        out.println("\n\n========== " + AroundEarth.dayCount + " 번째 날 밤 ==========");
+        if(number != -1) out.println("당신의 번호는 " + number + "입니다.\n");
+        else out.println("당신은 사망하셨습니다.");
 
-        out.println("생존자 목록\n==================================");
+        out.println("==========" + " 생존자 목록 " + "===========");
         AroundEarth.playerNum
                 .keySet().stream()
                 .filter(e -> AroundEarth.playerNum.get(e) > 0)
-                .forEach(out::println);
-        out.println("==================================\n\n");
+                .forEach(e -> out.print(e + "\t"));
+        out.println("\n==================================\n");
 
 
     }

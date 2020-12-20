@@ -2,7 +2,6 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
-import java.util.Map;
 import java.util.concurrent.Phaser;
 
 class DayTime implements Runnable {
@@ -27,30 +26,39 @@ class DayTime implements Runnable {
             display(out);
 
             phaser.arriveAndAwaitAdvance();
-            out.println("====== 회의 시간을 시작합니다. ======");
-            out.println("====== 제한 시간 30초 ======");
+            out.println("===== 회의 시간을 시작합니다 =====");
+            out.println("========= 제한 시간 30초 =========");
 
-            Thread chatThread = new Thread(new Chat(name, br));
-            chatThread.start();
+            if(number != -1) {
+                Thread chatThread = new Thread(new Chat(name, br));
+                chatThread.start();
 
-            Thread.sleep(AroundEarth.discussTime);
-            chatThread.interrupt();
-
-            phaser.arriveAndAwaitAdvance();
-            out.println("====== 회의 시간이 종료되었습니다. ======");
-
-            phaser.arriveAndAwaitAdvance();
-            out.println("====== 투표를 시작합니다. ======");
-            out.println("====== 제한 시간 10초 ======");
-
-            Thread voteThread = new Thread(new Vote(name, br));
-            voteThread.start();
-
-            Thread.sleep(AroundEarth.voteTime);
-            voteThread.interrupt();
+                Thread.sleep(AroundEarth.discussTime);
+                chatThread.interrupt();
+            } else{
+                Thread.sleep(AroundEarth.discussTime);
+            }
 
             phaser.arriveAndAwaitAdvance();
-            out.println("====== 투표 시간이 종료되었습니다. ======");
+            out.println("=== 회의 시간이 종료되었습니다 ===\n");
+
+            phaser.arriveAndAwaitAdvance();
+            out.println("======= 투표를 시작합니다 ========");
+            out.println("========= 제한 시간 10초 =========\n");
+
+
+            if(number != -1) {
+                Thread voteThread = new Thread(new Vote(name, br));
+                voteThread.start();
+
+                Thread.sleep(AroundEarth.voteTime);
+                voteThread.interrupt();
+            } else{
+                Thread.sleep(AroundEarth.voteTime);
+            }
+
+            phaser.arriveAndAwaitAdvance();
+            out.println("=== 투표 시간이 종료되었습니다 ===");
 
             phaser.arriveAndDeregister();
 
@@ -61,9 +69,7 @@ class DayTime implements Runnable {
 
     public void display(PrintWriter out){
 
-        out.println("========= " + AroundEarth.dayCount  + " 번째 날 아침 =========\n");
-
-        if(number != -1) out.println("당신의 번호는 " + number + "입니다.");
+        out.println("\n\n========= " + AroundEarth.dayCount  + " 번째 날 아침 =========");
 
         String status = "";
         if(AroundEarth.isKilled){
@@ -73,18 +79,16 @@ class DayTime implements Runnable {
         }
 
 
+        if(number != -1) out.println("당신의 번호는 " + number + "입니다.\n");
+        else out.println("당신은 사망하셨습니다.\n말을 할 수 없습니다.\n");
+
+
         out.println(status);
-        out.println("생존자 목록\n==================================");
+        out.println("==========" + " 생존자 목록 " + "===========");
         AroundEarth.playerNum
                 .keySet().stream()
                 .filter(e -> AroundEarth.playerNum.get(e) > 0)
-                .forEach(out::println);
-        out.println("==================================\n\n");
-
-        /*
-
-        회의 진행 메세지
-
-         */
+                .forEach(e -> out.print(e + "\t"));
+        out.println("\n==================================\n");
    }
 }

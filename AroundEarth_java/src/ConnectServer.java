@@ -19,9 +19,8 @@ public class ConnectServer implements Runnable {
             BufferedReader br = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
 
-            System.out.println(socket.getInetAddress() + "연결됨");
-
-            out.println("닉네임을 입력해 주세요");
+            out.println("========== AroundEarth ==========");
+            out.println("===== 닉네임을 입력해 주세요 ====");
 
             /*
              *
@@ -30,11 +29,13 @@ public class ConnectServer implements Runnable {
              */
 
             String name = br.readLine();
+            out.println("\n다른 플레이어들을 기다리는 중...\n");
+
             AroundEarth.playerSocket.put(name, socket);
             AroundEarth.voteCount.put(name, 0);
             barrier.await();
 
-            out.println("5초 후 게임이 시작됩니다");
+            out.println("준비 완료, 5초 후 게임이 시작됩니다");
             for (int i = 5; i > 0; i--) {
                 out.println(i);
                 Thread.sleep(1000);

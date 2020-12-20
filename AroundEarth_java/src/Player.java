@@ -9,7 +9,6 @@ public class Player {
         try {
             InetAddress localAddress = InetAddress.getLocalHost();
             Socket socket = new Socket(localAddress, 10000);
-            System.out.println("연결됨");
 
             Runnable r = () -> {
                 try {

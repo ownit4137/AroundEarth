@@ -32,10 +32,11 @@ public class AroundEarth {
 
         try {
             sSocket = new ServerSocket(10000);
-            System.out.println("서버 열림");
+            System.out.println("======= AroundEarth 서버 열림 =======");
 
             for (int i = 0; i < maxPlayer; i++) {
                 Socket cSocket = sSocket.accept();
+                System.out.println(cSocket.getInetAddress() + "연결됨");
                 Thread cThread = new Thread(new ConnectServer(cSocket, barrier));
                 cThread.start();
             }
@@ -74,9 +75,6 @@ public class AroundEarth {
                 e.printStackTrace();
             }
 
-            if((processFlag = scan.nextInt()) == 0){
-                break;
-            }
 
             /*
             *
@@ -86,6 +84,8 @@ public class AroundEarth {
 
             // DayTime
             dayCount++;
+
+
             try {
                 for (String name : playerSocket.keySet()) {
                     Thread dayThread = new Thread(new DayTime(name, phaser));
