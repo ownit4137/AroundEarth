@@ -3,10 +3,11 @@ import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.Map;
 
-public class Chat implements Runnable{
+public class Chat extends Thread{
     String name;
     Socket socket;
     BufferedReader br;
+    boolean stop = false;
 
     public Chat(String name, BufferedReader br) {
         this.name = name;
@@ -14,16 +15,20 @@ public class Chat implements Runnable{
         this.br = br;
     }
 
+    public void setStop(boolean stop){
+        this.stop = stop;
+    }
+
     public void run() {
-        try{
+        try {
             PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
 
             String inputLine;
             PrintWriter sender = null;
 
-            while((inputLine = br.readLine()) != null ) {
-                if(Thread.interrupted()) break;
-                for (Map.Entry<String, Socket> ent : AroundEarth.playerSocket.entrySet()){
+            while (!stop) {
+                inputLine = br.readLine();
+                for (Map.Entry<String, Socket> ent : AroundEarth.playerSocket.entrySet()) {
                     new PrintWriter(ent.getValue().getOutputStream(), true)
                             .println(name + " : " + inputLine);
                 }

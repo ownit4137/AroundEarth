@@ -8,10 +8,10 @@ class NightTime implements Runnable {
     Socket socket = null;
     String name;
     Phaser phaser;
-    Boolean isSkrull = false;
+    boolean isSkrull = false;
     int number;
 
-    public NightTime(String name, Phaser phaser, Boolean isSkrull) {
+    public NightTime(String name, Phaser phaser, boolean isSkrull) {
         this.socket = AroundEarth.playerSocket.get(name);
         this.name = name;
         this.phaser = phaser;
@@ -33,7 +33,8 @@ class NightTime implements Runnable {
                 out.println("당신은 Skrull입니다. \n죽일 사람의 이름을 15초 안에 입력하세요.");
 
                 String vict = br.readLine();
-                AroundEarth.killTerran(vict);
+                System.out.println(vict + "###");
+                AroundEarth.killPlayer(vict);
 
             } else {
                 out.println("당신은 Terran입니다.");

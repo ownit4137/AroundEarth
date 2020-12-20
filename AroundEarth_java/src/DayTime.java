@@ -30,11 +30,11 @@ class DayTime implements Runnable {
             out.println("========= 제한 시간 30초 =========");
 
             if(number != -1) {
-                Thread chatThread = new Thread(new Chat(name, br));
+                Chat chatThread = new Chat(name, br);
                 chatThread.start();
 
                 Thread.sleep(AroundEarth.discussTime);
-                chatThread.interrupt();
+                chatThread.setStop(true);
             } else{
                 Thread.sleep(AroundEarth.discussTime);
             }

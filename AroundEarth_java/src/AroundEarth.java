@@ -3,6 +3,7 @@ import java.net.Socket;
 import java.util.*;
 import java.util.concurrent.CyclicBarrier;
 import java.util.concurrent.Phaser;
+import java.util.stream.Stream;
 
 
 public class AroundEarth {
@@ -16,9 +17,9 @@ public class AroundEarth {
     static int skrullNum;
     static int dayCount = 1;
 
-    static Boolean isKilled = false;
+    static boolean isKilled = false;
     static String victim = "";
-    static Boolean isFinished = false;
+    static boolean isFinished = false;
 
     static Map<String, Socket> playerSocket = new Hashtable<String, Socket>();
     static Map<String, Integer> playerNum = new Hashtable<String, Integer>();
@@ -63,7 +64,7 @@ public class AroundEarth {
             // NightTime
             try {
                 for (String name : playerSocket.keySet()) {
-                    Boolean isSkrull = playerNum.get(name) == skrullNum;
+                    boolean isSkrull = playerNum.get(name) == skrullNum;
                     Thread nightThread = new Thread(new NightTime(name, phaser, isSkrull));
                     nightThread.start();
                 }
@@ -106,10 +107,11 @@ public class AroundEarth {
                 Thread.sleep(AroundEarth.stabilizeTime);
                 phaser.arriveAndAwaitAdvance();
 
+
+
             } catch (Exception e) {
                 e.printStackTrace();
             }
-
             AroundEarth.voteCount.entrySet().stream().forEach(e -> System.out.println(e.getKey() + " : " + e.getValue()));
             /*
              *
@@ -147,7 +149,7 @@ public class AroundEarth {
         int rand = (int) (Math.random() * 2) + maxPlayer - 1;
         skrullNum = rand;
     }
-    public static void killTerran(String vict){
+    public static void killPlayer(String vict){
         if(playerNum.keySet().contains(vict) && playerNum.get(vict) != -1){
             isKilled = true;
             victim = vict;
@@ -158,7 +160,17 @@ public class AroundEarth {
         }
     }
 
+    public static void voteResult(){
+        Stream countStream = AroundEarth.voteCount.values().stream();
+        /*
+
+            투표수 세기
+
+         */
+
+    }
 }
+
 
 
 

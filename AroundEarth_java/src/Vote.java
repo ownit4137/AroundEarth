@@ -30,12 +30,8 @@ public class Vote implements Runnable{
                 AroundEarth.playerNum.get(votedPlayer) != -1){
 
                 int votedNum = AroundEarth.voteCount.get(votedPlayer);
-                AroundEarth.voteCount.replace(name, votedNum + 1);
-
-                System.out.println(votedPlayer + "-" + (votedNum + 1) + "  ");
+                AroundEarth.voteCount.replace(votedPlayer, votedNum + 1);
             }
-
-            br.close();
         } catch (Exception e) {
             e.printStackTrace();
         }
