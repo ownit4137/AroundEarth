@@ -6,7 +6,7 @@ import java.util.concurrent.CyclicBarrier;
 
 
 public class ConnectServer implements Runnable {
-    static Socket socket = null;
+    Socket socket = null;
     CyclicBarrier barrier;
 
     public ConnectServer(Socket socket, CyclicBarrier barrier) {

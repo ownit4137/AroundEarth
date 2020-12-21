@@ -5,11 +5,11 @@ import java.net.Socket;
 import java.util.concurrent.Phaser;
 
 class NightTime implements Runnable {
-    Socket socket = null;
-    String name;
-    Phaser phaser;
-    boolean isSkrull = false;
-    int number;
+    private Socket socket = null;
+    private String name;
+    private Phaser phaser;
+    private boolean isSkrull = false;
+    private int number;
 
     public NightTime(String name, Phaser phaser, boolean isSkrull) {
         this.socket = AroundEarth.playerSocket.get(name);
@@ -25,7 +25,6 @@ class NightTime implements Runnable {
             PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
 
             display(out);
-            Thread.sleep(AroundEarth.stabilizeTime);
             phaser.arriveAndAwaitAdvance();
 
             if(isSkrull){
@@ -33,7 +32,6 @@ class NightTime implements Runnable {
                 out.println("당신은 Skrull입니다. \n죽일 사람의 이름을 15초 안에 입력하세요.");
 
                 String vict = br.readLine();
-                System.out.println(vict + "###");
                 AroundEarth.killPlayer(vict);
 
             } else {

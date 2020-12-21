@@ -2,14 +2,17 @@ import java.io.BufferedReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.Map;
+import java.util.concurrent.Phaser;
 
 public class Chat extends Thread{
-    String name;
-    Socket socket;
-    BufferedReader br;
-    boolean stop = false;
+    private String name;
+    private Socket socket;
+    private BufferedReader br;
+    private Phaser phaser;
+    private boolean stop = false;
 
-    public Chat(String name, BufferedReader br) {
+    public Chat(String name, BufferedReader br, Phaser phaser) {
+        this.phaser = phaser;
         this.name = name;
         this.socket = AroundEarth.playerSocket.get(name);
         this.br = br;
@@ -21,6 +24,8 @@ public class Chat extends Thread{
 
     public void run() {
         try {
+            phaser.register();
+
             PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
 
             String inputLine;
@@ -33,6 +38,10 @@ public class Chat extends Thread{
                             .println(name + " : " + inputLine);
                 }
             }
+
+            phaser.arriveAndAwaitAdvance();
+            phaser.arriveAndDeregister();
+
         } catch (Exception e) {
             e.printStackTrace();
         }

@@ -5,10 +5,10 @@ import java.net.Socket;
 import java.util.concurrent.Phaser;
 
 class DayTime implements Runnable {
-    Socket socket = null;
-    String name;
-    Phaser phaser;
-    int number;
+    private Socket socket = null;
+    private String name;
+    private Phaser phaser;
+    private int number;
 
     public DayTime(String name, Phaser phaser) {
         this.socket = AroundEarth.playerSocket.get(name);
@@ -30,7 +30,7 @@ class DayTime implements Runnable {
             out.println("========= 제한 시간 30초 =========");
 
             if(number != -1) {
-                Chat chatThread = new Chat(name, br);
+                Chat chatThread = new Chat(name, br, phaser);
                 chatThread.start();
 
                 Thread.sleep(AroundEarth.discussTime);
@@ -48,7 +48,7 @@ class DayTime implements Runnable {
 
 
             if(number != -1) {
-                Thread voteThread = new Thread(new Vote(name, br));
+                Thread voteThread = new Thread(new Vote(name, br, phaser));
                 voteThread.start();
 
                 Thread.sleep(AroundEarth.voteTime);
