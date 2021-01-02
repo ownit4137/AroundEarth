@@ -37,7 +37,5 @@ Skrull이 Terran을 모두 죽이면 Skrull이 승리하고, Terran이 Skrull을
 플레이어가 n명일 때, Skrull에게는 n이나 n-1이 부여됩니다.
 - ex) 플레이어가 5명일 때 Skrull에게는 4나 5가 부여됨
 
-Skrull은 교묘하게 숨길 것이고, Terran은 그것을 찾아내야 합니다.
 
-
-### 12191584 김창수
+### 1219 김창수
