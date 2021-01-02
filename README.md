@@ -38,4 +38,4 @@ Skrull이 Terran을 모두 죽이면 Skrull이 승리하고, Terran이 Skrull을
 - ex) 플레이어가 5명일 때 Skrull에게는 4나 5가 부여됨
 
 
-### 1219 김창수
+> 2020.12 Final assignment of the lecture *Theory of Programming Language*
